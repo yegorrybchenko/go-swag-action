@@ -130,20 +130,31 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.extractTool = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const tc = __importStar(__nccwpck_require__(784));
+const fs_1 = __importDefault(__nccwpck_require__(747));
+const assert_1 = __nccwpck_require__(357);
+const path_1 = __importDefault(__nccwpck_require__(622));
 const downloadPath = 'https://github.com/swaggo/swag/releases/download/';
 function extractTool(version) {
     return __awaiter(this, void 0, void 0, function* () {
         const fullDownloadPath = getFullDownloadPath(version);
-        core.info(`Installing tool ${version}...`);
+        core.debug(`Download path is ${fullDownloadPath}`);
+        core.info(`Installing swag tool ${version}...`);
         const toolPathZip = yield tc.downloadTool(fullDownloadPath);
-        const homeBinPath = `${process.env.HOME}/bin`;
-        const toolPath = yield tc.extractTar(toolPathZip, homeBinPath);
-        core.addPath(toolPath);
-        return toolPath;
+        const toolPathDirectory = yield tc.extractTar(toolPathZip);
+        const swagToolPath = path_1.default.join(toolPathDirectory, 'swag');
+        const homeBinPath = `${_getHOMEDirectory()}/bin`;
+        (0, assert_1.ok)(homeBinPath, 'Expected HOME/bin to be defined');
+        const newSwagToolPath = path_1.default.join(homeBinPath, 'swag');
+        core.debug(`New swag tool path is ${newSwagToolPath}`);
+        fs_1.default.copyFileSync(swagToolPath, newSwagToolPath);
+        return newSwagToolPath;
     });
 }
 exports.extractTool = extractTool;
@@ -159,6 +170,11 @@ function getFullDownloadPath(version) {
         throw new Error(`Platform ${process.platform} is not supported`);
     }
     return `${downloadPath}v${version}/swag_${version}_${platform}_x86_64.tar.gz`;
+}
+function _getHOMEDirectory() {
+    const homeDirectory = process.env.HOME || '';
+    (0, assert_1.ok)(homeDirectory, 'Expected HOME to be defined');
+    return homeDirectory;
 }
 
 
