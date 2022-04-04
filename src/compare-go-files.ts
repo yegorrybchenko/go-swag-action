@@ -1,19 +1,21 @@
 import * as core from '@actions/core'
 import fs from 'fs'
+import ss from 'string-similarity'
 
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go'
 
 export async function compareGoFiles(generatedFilePath: string): Promise<void> {
   const existingGoFilePath = _getExistingGoFilePath()
+
   const existingFileBuf = fs.readFileSync(existingGoFilePath)
   const generatedFileBuf = fs.readFileSync(generatedFilePath)
 
-  core.debug(existingFileBuf.length.toString())
-  core.debug(generatedFileBuf.length.toString())
+  const raiting = ss.compareTwoStrings(
+    existingFileBuf.toString(),
+    generatedFileBuf.toString()
+  )
 
-  const isEqual = existingFileBuf.equals(generatedFileBuf)
-
-  if (!isEqual) {
+  if (raiting !== 1) {
     throw new Error(`Go files are not equal`)
   }
 }

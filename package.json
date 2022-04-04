@@ -27,7 +27,8 @@
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.6.0",
-    "@actions/tool-cache": "^1.7.2"
+    "@actions/tool-cache": "^1.7.2",
+    "@types/string-similarity": "^4.0.0"
   },
   "devDependencies": {
     "@types/node": "^16.10.5",

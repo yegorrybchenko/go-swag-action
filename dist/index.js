@@ -87,16 +87,15 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.compareGoFiles = void 0;
 const core = __importStar(__nccwpck_require__(186));
 const fs_1 = __importDefault(__nccwpck_require__(747));
+const string_similarity_1 = __importDefault(__nccwpck_require__(79));
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go';
 function compareGoFiles(generatedFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingGoFilePath = _getExistingGoFilePath();
         const existingFileBuf = fs_1.default.readFileSync(existingGoFilePath);
         const generatedFileBuf = fs_1.default.readFileSync(generatedFilePath);
-        core.debug(existingFileBuf.length.toString());
-        core.debug(generatedFileBuf.length.toString());
-        const isEqual = existingFileBuf.equals(generatedFileBuf);
-        if (!isEqual) {
+        const raiting = string_similarity_1.default.compareTwoStrings(existingFileBuf.toString(), generatedFileBuf.toString());
+        if (raiting !== 1) {
             throw new Error(`Go files are not equal`);
         }
     });
@@ -5704,6 +5703,14 @@ function v4(options, buf, offset) {
 }
 
 module.exports = v4;
+
+
+/***/ }),
+
+/***/ 79:
+/***/ ((module) => {
+
+module.exports = eval("require")("string-similarity");
 
 
 /***/ }),
