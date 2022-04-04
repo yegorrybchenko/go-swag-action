@@ -95,6 +95,7 @@ function compareGoFiles(generatedFilePath) {
         const existingFileBuf = fs_1.default.readFileSync(existingGoFilePath);
         const generatedFileBuf = fs_1.default.readFileSync(generatedFilePath);
         const raiting = string_similarity_1.default.compareTwoStrings(existingFileBuf.toString(), generatedFileBuf.toString());
+        core.debug(raiting.toString());
         if (raiting !== 1) {
             throw new Error(`Go files are not equal`);
         }

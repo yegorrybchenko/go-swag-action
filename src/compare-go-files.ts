@@ -15,6 +15,8 @@ export async function compareGoFiles(generatedFilePath: string): Promise<void> {
     generatedFileBuf.toString()
   )
 
+  core.debug(raiting.toString())
+
   if (raiting !== 1) {
     throw new Error(`Go files are not equal`)
   }
