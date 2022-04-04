@@ -4,13 +4,14 @@ import fs from 'fs'
 import {ok} from 'assert'
 import path from 'path'
 
+
 const downloadPath = 'https://github.com/swaggo/swag/releases/download/'
 
 export async function extractTool(version: string): Promise<string> {
   const fullDownloadPath = getFullDownloadPath(version)
   core.debug(`Download path is ${fullDownloadPath}`)
 
-  core.info(`Installing swag tool ${version}...`)
+  core.info(`Installing swag tool ${version} ...`)
   const toolPathZip = await tc.downloadTool(fullDownloadPath)
 
   const toolPathDirectory = await tc.extractTar(toolPathZip)
@@ -21,6 +22,18 @@ export async function extractTool(version: string): Promise<string> {
   ok(homeBinPath, 'Expected HOME/bin to be defined')
   const newSwagToolPath = path.join(homeBinPath, 'swag')
   core.debug(`New swag tool path is ${newSwagToolPath}`)
+
+  const files = fs.readdirSync(toolPathDirectory)
+  core.debug(`list of files in ${toolPathDirectory}`)
+  for (const file of files) {
+    core.debug(file)
+  }
+
+  const files2 = fs.readdirSync(homeBinPath)
+  core.debug(`list of files in ${homeBinPath}`)
+  for (const file of files2) {
+    core.debug(file)
+  }
 
   fs.copyFileSync(swagToolPath, newSwagToolPath)
 
