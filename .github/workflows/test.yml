@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: ./
         with:
-          command: init -g example_test/ -ot go
+          command: init -d example_test -ot go
           swagWersion: 1.8.1
           equalToGoPath: docs/docs.go
           equalToGoOriginPath: example_test/docs/docs.go
