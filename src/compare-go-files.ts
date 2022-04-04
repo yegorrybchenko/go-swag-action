@@ -1,6 +1,6 @@
+import * as Diff from 'diff'
 import * as core from '@actions/core'
 import fs from 'fs'
-import ss from 'string-similarity'
 
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go'
 
@@ -10,16 +10,27 @@ export async function compareGoFiles(generatedFilePath: string): Promise<void> {
   const existingFileBuf = fs.readFileSync(existingGoFilePath)
   const generatedFileBuf = fs.readFileSync(generatedFilePath)
 
-  const raiting = ss.compareTwoStrings(
+  const changes = Diff.diffLines(
     existingFileBuf.toString(),
     generatedFileBuf.toString()
   )
 
-  core.debug(raiting.toString())
-
-  if (raiting !== 1) {
-    throw new Error(`Go files are not equal`)
+  if (changes.length === 0) {
+    core.info('Files are equal')
+    return
   }
+
+  for (const change of changes) {
+    const color = change.added
+      ? '\u001b[32m'
+      : change.removed
+      ? '\u001b[31m'
+      : '\u001b[90m'
+
+    core.info(`${color}${change.value}`)
+  }
+
+  throw new Error(`Go files are not equal`)
 }
 
 function _getExistingGoFilePath(): string {

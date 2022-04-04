@@ -28,11 +28,11 @@
   "dependencies": {
     "@actions/core": "^1.6.0",
     "@actions/tool-cache": "^1.7.2",
-    "string-similarity": "^4.0.4"
+    "diff": "^5.0.0"
   },
   "devDependencies": {
+    "@types/diff": "^5.0.2",
     "@types/node": "^16.10.5",
-    "@types/string-similarity": "^4.0.0",
     "@typescript-eslint/parser": "^5.8.1",
     "@vercel/ncc": "^0.31.1",
     "eslint": "^7.32.0",
