@@ -4,7 +4,6 @@ import fs from 'fs'
 import {ok} from 'assert'
 import path from 'path'
 
-
 const downloadPath = 'https://github.com/swaggo/swag/releases/download/'
 
 export async function extractTool(version: string): Promise<string> {
@@ -15,13 +14,11 @@ export async function extractTool(version: string): Promise<string> {
   const toolPathZip = await tc.downloadTool(fullDownloadPath)
 
   const toolPathDirectory = await tc.extractTar(toolPathZip)
-
   const swagToolPath = path.join(toolPathDirectory, 'swag')
 
   const newSwagToolPath = path.join(_getHOMEDirectory(), 'swag')
-  core.debug(`New swag tool path is ${newSwagToolPath}`)
-
   fs.copyFileSync(swagToolPath, newSwagToolPath)
+  core.debug(`New swag tool path is ${newSwagToolPath}`)
 
   core.addPath(newSwagToolPath)
 

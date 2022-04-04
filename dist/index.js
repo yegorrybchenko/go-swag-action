@@ -82,17 +82,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.compareGoFiles = void 0;
+const core = __importStar(__nccwpck_require__(186));
 const exec = __importStar(__nccwpck_require__(514));
-function compareGoFiles(filePath) {
+const DEFAULT_GO_FILE_PATH = 'docs/docs.go';
+function compareGoFiles(generatedFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
-        const defaultFilePath = 'docs/docs.go';
-        const returnCode = yield exec.exec('diff', [filePath, defaultFilePath]);
+        const existingGoFilePath = _getExistingGoFilePath();
+        const returnCode = yield exec.exec('diff', [
+            existingGoFilePath,
+            generatedFilePath
+        ]);
         if (returnCode !== 0) {
-            throw new Error(`swag tool is failed to exec your command`);
+            throw new Error(`diff failed to compare two files`);
         }
     });
 }
 exports.compareGoFiles = compareGoFiles;
+function _getExistingGoFilePath() {
+    const baseGoFileToEqual = core.getInput('equalToGoOriginPath');
+    return baseGoFileToEqual || DEFAULT_GO_FILE_PATH;
+}
 
 
 /***/ }),
@@ -150,8 +159,8 @@ function extractTool(version) {
         const toolPathDirectory = yield tc.extractTar(toolPathZip);
         const swagToolPath = path_1.default.join(toolPathDirectory, 'swag');
         const newSwagToolPath = path_1.default.join(_getHOMEDirectory(), 'swag');
-        core.debug(`New swag tool path is ${newSwagToolPath}`);
         fs_1.default.copyFileSync(swagToolPath, newSwagToolPath);
+        core.debug(`New swag tool path is ${newSwagToolPath}`);
         core.addPath(newSwagToolPath);
         return newSwagToolPath;
     });
@@ -279,7 +288,7 @@ function run() {
         if (returnCode !== 0) {
             throw new Error(`swag tool is failed to exec your command`);
         }
-        const equalToGoPath = core.getInput('equalToGo');
+        const equalToGoPath = core.getInput('equalToGoPath');
         if (equalToGoPath !== '') {
             yield (0, compare_go_files_1.compareGoFiles)(equalToGoPath);
         }

@@ -9,8 +9,11 @@ inputs:
     description: 'Version of swag'
     required: false
     default: '1.8.1'
-  equalToGo:
+  equalToGoPath:
     description: 'Specifies a path to generated docs.go file is needed to be compared with your commited docs.go file'
+    required: false
+  equalToGoOriginPath:
+    description: 'Specifies a path to docs.go file existing in repository. Works only if "equalToGo" option is specified'
     required: false
 runs:
   using: 'node16'

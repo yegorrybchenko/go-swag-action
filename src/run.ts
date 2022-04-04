@@ -13,7 +13,7 @@ export async function run(): Promise<void> {
     throw new Error(`swag tool is failed to exec your command`)
   }
 
-  const equalToGoPath = core.getInput('equalToGo')
+  const equalToGoPath = core.getInput('equalToGoPath')
   if (equalToGoPath !== '') {
     await compareGoFiles(equalToGoPath)
   }
