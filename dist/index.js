@@ -80,20 +80,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.compareGoFiles = void 0;
 const core = __importStar(__nccwpck_require__(186));
-const exec = __importStar(__nccwpck_require__(514));
+const fs_1 = __importDefault(__nccwpck_require__(747));
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go';
 function compareGoFiles(generatedFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingGoFilePath = _getExistingGoFilePath();
-        const returnCode = yield exec.exec('diff', [
-            existingGoFilePath,
-            generatedFilePath
-        ]);
-        if (returnCode !== 0) {
-            throw new Error(`diff failed to compare two files`);
+        const existingFileBuf = fs_1.default.readFileSync(existingGoFilePath);
+        const generatedFileBuf = fs_1.default.readFileSync(generatedFilePath);
+        const isEqual = existingFileBuf.equals(generatedFileBuf);
+        if (!isEqual) {
+            throw new Error(`Go files are not equal`);
         }
     });
 }

@@ -1,17 +1,17 @@
 import * as core from '@actions/core'
-import * as exec from '@actions/exec'
+import fs from 'fs'
 
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go'
 
 export async function compareGoFiles(generatedFilePath: string): Promise<void> {
   const existingGoFilePath = _getExistingGoFilePath()
-  const returnCode = await exec.exec('diff', [
-    existingGoFilePath,
-    generatedFilePath
-  ])
+  const existingFileBuf = fs.readFileSync(existingGoFilePath)
+  const generatedFileBuf = fs.readFileSync(generatedFilePath)
 
-  if (returnCode !== 0) {
-    throw new Error(`diff failed to compare two files`)
+  const isEqual = existingFileBuf.equals(generatedFileBuf)
+
+  if (!isEqual) {
+    throw new Error(`Go files are not equal`)
   }
 }
 
