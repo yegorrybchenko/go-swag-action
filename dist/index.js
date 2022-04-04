@@ -149,21 +149,10 @@ function extractTool(version) {
         const toolPathZip = yield tc.downloadTool(fullDownloadPath);
         const toolPathDirectory = yield tc.extractTar(toolPathZip);
         const swagToolPath = path_1.default.join(toolPathDirectory, 'swag');
-        const homeBinPath = `${_getHOMEDirectory()}/bin`;
-        (0, assert_1.ok)(homeBinPath, 'Expected HOME/bin to be defined');
-        const newSwagToolPath = path_1.default.join(homeBinPath, 'swag');
+        const newSwagToolPath = path_1.default.join(_getHOMEDirectory(), 'swag');
         core.debug(`New swag tool path is ${newSwagToolPath}`);
-        const files = fs_1.default.readdirSync(toolPathDirectory);
-        core.debug(`list of files in ${toolPathDirectory}`);
-        for (const file of files) {
-            core.debug(file);
-        }
-        const files2 = fs_1.default.readdirSync(homeBinPath);
-        core.debug(`list of files in ${homeBinPath}`);
-        for (const file of files2) {
-            core.debug(file);
-        }
         fs_1.default.copyFileSync(swagToolPath, newSwagToolPath);
+        core.addPath(newSwagToolPath);
         return newSwagToolPath;
     });
 }

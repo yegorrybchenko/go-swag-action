@@ -18,24 +18,12 @@ export async function extractTool(version: string): Promise<string> {
 
   const swagToolPath = path.join(toolPathDirectory, 'swag')
 
-  const homeBinPath = `${_getHOMEDirectory()}/bin`
-  ok(homeBinPath, 'Expected HOME/bin to be defined')
-  const newSwagToolPath = path.join(homeBinPath, 'swag')
+  const newSwagToolPath = path.join(_getHOMEDirectory(), 'swag')
   core.debug(`New swag tool path is ${newSwagToolPath}`)
 
-  const files = fs.readdirSync(toolPathDirectory)
-  core.debug(`list of files in ${toolPathDirectory}`)
-  for (const file of files) {
-    core.debug(file)
-  }
-
-  const files2 = fs.readdirSync(homeBinPath)
-  core.debug(`list of files in ${homeBinPath}`)
-  for (const file of files2) {
-    core.debug(file)
-  }
-
   fs.copyFileSync(swagToolPath, newSwagToolPath)
+
+  core.addPath(newSwagToolPath)
 
   return newSwagToolPath
 }
