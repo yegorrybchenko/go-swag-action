@@ -15,26 +15,27 @@ export async function compareGoFiles(generatedFilePath: string): Promise<void> {
     generatedFileBuf.toString()
   )
 
-  if (changes.length === 0) {
-    core.info('Files are equal')
-    return
-  }
+  let changedLines = 0
 
   for (const change of changes) {
-    if (change.count) {
-      core.debug(change.count.toString())
-    }
-
     if (change.added) {
       const greenColor = '\u001b[32m'
       core.info(`${greenColor}${change.value}`)
+
+      changedLines++
     } else if (change.removed) {
       const redColor = '\u001b[31m'
       core.info(`${redColor}${change.value}`)
+
+      changedLines++
     }
   }
 
-  throw new Error(`Go files are not equal`)
+  if (changedLines === 0) {
+    core.info('Files are equal')
+  } else {
+    throw new Error(`Go files are not equal`)
+  }
 }
 
 function _getExistingGoFilePath(): string {
