@@ -39,7 +39,7 @@ exports.execTool = void 0;
 const exec = __importStar(__nccwpck_require__(514));
 function execTool(tool, command) {
     return __awaiter(this, void 0, void 0, function* () {
-        return exec.exec(tool, [command]);
+        return exec.exec(tool, command.split(' '));
     });
 }
 exports.execTool = execTool;
