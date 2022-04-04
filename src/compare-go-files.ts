@@ -8,6 +8,9 @@ export async function compareGoFiles(generatedFilePath: string): Promise<void> {
   const existingFileBuf = fs.readFileSync(existingGoFilePath)
   const generatedFileBuf = fs.readFileSync(generatedFilePath)
 
+  core.debug(existingFileBuf.length.toString())
+  core.debug(generatedFileBuf.length.toString())
+
   const isEqual = existingFileBuf.equals(generatedFileBuf)
 
   if (!isEqual) {

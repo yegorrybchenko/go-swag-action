@@ -93,6 +93,8 @@ function compareGoFiles(generatedFilePath) {
         const existingGoFilePath = _getExistingGoFilePath();
         const existingFileBuf = fs_1.default.readFileSync(existingGoFilePath);
         const generatedFileBuf = fs_1.default.readFileSync(generatedFilePath);
+        core.debug(existingFileBuf.length.toString());
+        core.debug(generatedFileBuf.length.toString());
         const isEqual = existingFileBuf.equals(generatedFileBuf);
         if (!isEqual) {
             throw new Error(`Go files are not equal`);
