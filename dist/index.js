@@ -246,7 +246,7 @@ const run_1 = __nccwpck_require__(7884);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            (0, run_1.run)();
+            yield (0, run_1.run)();
         }
         catch (error) {
             if (error instanceof Error)
