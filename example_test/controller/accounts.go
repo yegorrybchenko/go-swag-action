@@ -19,6 +19,8 @@ import (
 // @Param        id   path      int  true  "Account ID"
 // @Success      200  {object}  model.Account
 // @Failure      400  {object}  httputil.HTTPError
+// @Failure      404  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
 // @Router       /accounts/{id} [get]
 func (c *Controller) ShowAccount(ctx *gin.Context) {
 	id := ctx.Param("id")

@@ -309,12 +309,14 @@ const command_1 = __nccwpck_require__(524);
 const extract_1 = __nccwpck_require__(1259);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const command = core.getInput('command', { required: true });
         const swagVersion = core.getInput('swagWersion', { required: true });
         const toolPath = yield (0, extract_1.extractTool)(swagVersion);
-        const returnCode = yield (0, command_1.execTool)(toolPath, command);
-        if (returnCode !== 0) {
-            throw new Error(`swag tool is failed to exec your command`);
+        const command = core.getInput('command');
+        if (command !== '') {
+            const returnCode = yield (0, command_1.execTool)(toolPath, command);
+            if (returnCode !== 0) {
+                throw new Error(`swag tool is failed to exec your command`);
+            }
         }
         const equalToGoPath = core.getInput('equalToGoPath');
         if (equalToGoPath !== '') {
