@@ -1,11 +1,20 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Go swaggo/swag tool'
+author: 'Yegor Rybchenko'
 inputs:
-  milliseconds: # change this
+  command:
+    description: 'swag command to execute. Default is "init"'
     required: true
-    description: 'input description here'
-    default: 'default value if applicable'
+    default: 'init'
+  swagWersion:
+    description: 'Version of swag'
+    required: false
+    default: '1.8.1'
+  equalToGoPath:
+    description: 'Specifies a path to generated docs.go file is needed to be compared with your commited docs.go file'
+    required: false
+  equalToGoOriginPath:
+    description: 'Specifies a path to docs.go file existing in repository. Works only if "equalToGo" option is specified'
+    required: false
 runs:
   using: 'node16'
   main: 'dist/index.js'
