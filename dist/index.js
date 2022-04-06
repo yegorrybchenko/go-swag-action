@@ -94,9 +94,11 @@ function compareGoFiles(generatedFilePath) {
         const existingGoFilePath = _getExistingGoFilePath();
         const existingFileBuf = fs_1.default.readFileSync(existingGoFilePath);
         const generatedFileBuf = fs_1.default.readFileSync(generatedFilePath);
+        core.info(`Comparing ${existingGoFilePath} with ${generatedFilePath} ...`);
         const changes = Diff.diffLines(existingFileBuf.toString(), generatedFileBuf.toString());
         let changedLines = 0;
         for (const change of changes) {
+            core.debug(`Change value: ${change.value}, count: ${change.count}, added: ${change.added}, removed: ${change.removed}`);
             if (change.added) {
                 const greenColor = '\u001b[32m';
                 core.info(`${greenColor}${change.value}`);
@@ -109,7 +111,7 @@ function compareGoFiles(generatedFilePath) {
             }
         }
         if (changedLines === 0) {
-            core.info('Files are equal');
+            core.info('\u001b[32mFiles are equal');
         }
         else {
             throw new Error(`Go files are not equal`);
