@@ -112,7 +112,6 @@ function compareGoFiles(generatedFilePath) {
             core.info('\u001b[32mFiles are equal');
         }
         else {
-            core.error('Go files are not equal');
             throw new Error(`Go files are not equal`);
         }
     });
@@ -256,7 +255,7 @@ function main() {
         }
         catch (error) {
             if (error instanceof Error)
-                core.setFailed(error.message);
+                core.error(error.message);
         }
     });
 }
