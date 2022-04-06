@@ -21,9 +21,6 @@ export async function compareGoFiles(generatedFilePath: string): Promise<void> {
   let changedLines = 0
 
   for (const change of changes) {
-    core.debug(
-      `Change value: ${change.value}, count: ${change.count}, added: ${change.added}, removed: ${change.removed}`
-    )
     if (change.added) {
       _printDiffMessage(change.value, true)
 
@@ -55,5 +52,7 @@ function _printDiffMessage(value: string, added: boolean): void {
 
   const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`)
 
-  core.info(replacedString)
+  for (const str of replacedString.split('\n')) {
+    core.info(str)
+  }
 }

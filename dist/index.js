@@ -99,7 +99,6 @@ function compareGoFiles(generatedFilePath) {
         const changes = Diff.diffLines(existingFileBuf.toString(), generatedFileBuf.toString());
         let changedLines = 0;
         for (const change of changes) {
-            core.debug(`Change value: ${change.value}, count: ${change.count}, added: ${change.added}, removed: ${change.removed}`);
             if (change.added) {
                 _printDiffMessage(change.value, true);
                 changedLines++;
@@ -127,7 +126,9 @@ function _printDiffMessage(value, added) {
         ? `${ansi_styles_1.default.color.green.open}+`
         : `${ansi_styles_1.default.color.red.open}-`;
     const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`);
-    core.info(replacedString);
+    for (const str of replacedString.split('\n')) {
+        core.info(str);
+    }
 }
 
 
