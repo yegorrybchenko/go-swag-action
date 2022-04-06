@@ -100,13 +100,11 @@ function compareGoFiles(generatedFilePath) {
         for (const change of changes) {
             core.debug(`Change value: ${change.value}, count: ${change.count}, added: ${change.added}, removed: ${change.removed}`);
             if (change.added) {
-                const greenColor = '\u001b[32m';
-                core.info(`${greenColor}${change.value}`);
+                _printDiffMessage(change.value, true);
                 changedLines++;
             }
             else if (change.removed) {
-                const redColor = '\u001b[31m';
-                core.info(`${redColor}${change.value}`);
+                _printDiffMessage(change.value, false);
                 changedLines++;
             }
         }
@@ -114,6 +112,7 @@ function compareGoFiles(generatedFilePath) {
             core.info('\u001b[32mFiles are equal');
         }
         else {
+            core.error('Go files are not equal');
             throw new Error(`Go files are not equal`);
         }
     });
@@ -122,6 +121,11 @@ exports.compareGoFiles = compareGoFiles;
 function _getExistingGoFilePath() {
     const baseGoFileToEqual = core.getInput('equalToGoOriginPath');
     return baseGoFileToEqual || DEFAULT_GO_FILE_PATH;
+}
+function _printDiffMessage(value, added) {
+    const insertValue = added ? '\u001b[31m+' : '\u001b[32m-';
+    const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`);
+    core.info(replacedString);
 }
 
 
