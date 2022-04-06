@@ -1,6 +1,7 @@
 import * as Diff from 'diff'
 import * as core from '@actions/core'
 import fs from 'fs'
+import styles from 'ansi-styles'
 
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go'
 
@@ -48,9 +49,11 @@ function _getExistingGoFilePath(): string {
 }
 
 function _printDiffMessage(value: string, added: boolean): void {
-  const insertValue = added ? '\u001b[31m+' : '\u001b[32m-'
+  const color = added ? styles.color.green : styles.color.red
+  // styles.color.ansi(styles.color.green.)
+  // const insertValue = added ? '\u001b[32m+' : '\u001b[31m-'
 
-  const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`)
+  // const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`)
 
-  core.info(replacedString)
+  core.info(`${color.open}${value}${color.close}`)
 }
