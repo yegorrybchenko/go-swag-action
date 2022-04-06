@@ -123,11 +123,11 @@ function _getExistingGoFilePath() {
     return baseGoFileToEqual || DEFAULT_GO_FILE_PATH;
 }
 function _printDiffMessage(value, added) {
-    const color = added ? ansi_styles_1.default.color.green : ansi_styles_1.default.color.red;
-    // styles.color.ansi(styles.color.green.)
-    // const insertValue = added ? '\u001b[32m+' : '\u001b[31m-'
-    // const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`)
-    core.info(`${color.open}${value}${color.close}`);
+    const insertValue = added
+        ? `${ansi_styles_1.default.color.green.open}+`
+        : `${ansi_styles_1.default.color.red.open}-`;
+    const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`);
+    core.info(replacedString);
 }
 
 

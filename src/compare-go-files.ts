@@ -49,11 +49,11 @@ function _getExistingGoFilePath(): string {
 }
 
 function _printDiffMessage(value: string, added: boolean): void {
-  const color = added ? styles.color.green : styles.color.red
-  // styles.color.ansi(styles.color.green.)
-  // const insertValue = added ? '\u001b[32m+' : '\u001b[31m-'
+  const insertValue = added
+    ? `${styles.color.green.open}+`
+    : `${styles.color.red.open}-`
 
-  // const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`)
+  const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`)
 
-  core.info(`${color.open}${value}${color.close}`)
+  core.info(replacedString)
 }
