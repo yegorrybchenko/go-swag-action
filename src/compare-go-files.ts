@@ -33,7 +33,7 @@ export async function compareGoFiles(generatedFilePath: string): Promise<void> {
   }
 
   if (changedLines === 0) {
-    core.info('\u001b[32mFiles are equal')
+    core.info(`${styles.color.green.open}Files are equal`)
   } else {
     throw new Error(`Go files are not equal`)
   }
