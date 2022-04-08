@@ -1,6 +1,9 @@
 name: 'Go swaggo/swag tool'
 author: 'Yegor Rybchenko'
 description: This action installs swag tool (https://github.com/swaggo/swag) to generate/test your golang application
+branding:
+  icon: 'book-open'  
+  color: 'green'
 inputs:
   swagWersion:
     description: 'Version of swag'
