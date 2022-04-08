@@ -88,28 +88,28 @@ exports.compareGoFiles = void 0;
 const Diff = __importStar(__nccwpck_require__(1672));
 const core = __importStar(__nccwpck_require__(2186));
 const fs_1 = __importDefault(__nccwpck_require__(7147));
+const ansi_styles_1 = __importDefault(__nccwpck_require__(6844));
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go';
 function compareGoFiles(generatedFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingGoFilePath = _getExistingGoFilePath();
         const existingFileBuf = fs_1.default.readFileSync(existingGoFilePath);
         const generatedFileBuf = fs_1.default.readFileSync(generatedFilePath);
+        core.info(`Comparing ${existingGoFilePath} with ${generatedFilePath} ...`);
         const changes = Diff.diffLines(existingFileBuf.toString(), generatedFileBuf.toString());
         let changedLines = 0;
         for (const change of changes) {
             if (change.added) {
-                const greenColor = '\u001b[32m';
-                core.info(`${greenColor}${change.value}`);
+                _printDiffMessage(change.value, true);
                 changedLines++;
             }
             else if (change.removed) {
-                const redColor = '\u001b[31m';
-                core.info(`${redColor}${change.value}`);
+                _printDiffMessage(change.value, false);
                 changedLines++;
             }
         }
         if (changedLines === 0) {
-            core.info('Files are equal');
+            core.info('\u001b[32mFiles are equal');
         }
         else {
             throw new Error(`Go files are not equal`);
@@ -120,6 +120,15 @@ exports.compareGoFiles = compareGoFiles;
 function _getExistingGoFilePath() {
     const baseGoFileToEqual = core.getInput('equalToGoOriginPath');
     return baseGoFileToEqual || DEFAULT_GO_FILE_PATH;
+}
+function _printDiffMessage(value, added) {
+    const insertValue = added
+        ? `${ansi_styles_1.default.color.green.open}+`
+        : `${ansi_styles_1.default.color.red.open}-`;
+    const replacedString = insertValue + value.replace(/\n/gm, `\n${insertValue}`);
+    for (const str of replacedString.split('\n')) {
+        core.info(str);
+    }
 }
 
 
@@ -246,7 +255,7 @@ const run_1 = __nccwpck_require__(7884);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            (0, run_1.run)();
+            yield (0, run_1.run)();
         }
         catch (error) {
             if (error instanceof Error)
@@ -300,12 +309,14 @@ const command_1 = __nccwpck_require__(524);
 const extract_1 = __nccwpck_require__(1259);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-        const command = core.getInput('command', { required: true });
         const swagVersion = core.getInput('swagWersion', { required: true });
         const toolPath = yield (0, extract_1.extractTool)(swagVersion);
-        const returnCode = yield (0, command_1.execTool)(toolPath, command);
-        if (returnCode !== 0) {
-            throw new Error(`swag tool is failed to exec your command`);
+        const command = core.getInput('command');
+        if (command !== '') {
+            const returnCode = yield (0, command_1.execTool)(toolPath, command);
+            if (returnCode !== 0) {
+                throw new Error(`swag tool is failed to exec your command`);
+            }
         }
         const equalToGoPath = core.getInput('equalToGoPath');
         if (equalToGoPath !== '') {
@@ -8501,6 +8512,234 @@ module.exports = require("tls");
 "use strict";
 module.exports = require("util");
 
+/***/ }),
+
+/***/ 6844:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __nccwpck_require__) => {
+
+"use strict";
+__nccwpck_require__.r(__webpack_exports__);
+/* harmony export */ __nccwpck_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+const ANSI_BACKGROUND_OFFSET = 10;
+
+const wrapAnsi16 = (offset = 0) => code => `\u001B[${code + offset}m`;
+
+const wrapAnsi256 = (offset = 0) => code => `\u001B[${38 + offset};5;${code}m`;
+
+const wrapAnsi16m = (offset = 0) => (red, green, blue) => `\u001B[${38 + offset};2;${red};${green};${blue}m`;
+
+function assembleStyles() {
+	const codes = new Map();
+	const styles = {
+		modifier: {
+			reset: [0, 0],
+			// 21 isn't widely supported and 22 does the same thing
+			bold: [1, 22],
+			dim: [2, 22],
+			italic: [3, 23],
+			underline: [4, 24],
+			overline: [53, 55],
+			inverse: [7, 27],
+			hidden: [8, 28],
+			strikethrough: [9, 29]
+		},
+		color: {
+			black: [30, 39],
+			red: [31, 39],
+			green: [32, 39],
+			yellow: [33, 39],
+			blue: [34, 39],
+			magenta: [35, 39],
+			cyan: [36, 39],
+			white: [37, 39],
+
+			// Bright color
+			blackBright: [90, 39],
+			redBright: [91, 39],
+			greenBright: [92, 39],
+			yellowBright: [93, 39],
+			blueBright: [94, 39],
+			magentaBright: [95, 39],
+			cyanBright: [96, 39],
+			whiteBright: [97, 39]
+		},
+		bgColor: {
+			bgBlack: [40, 49],
+			bgRed: [41, 49],
+			bgGreen: [42, 49],
+			bgYellow: [43, 49],
+			bgBlue: [44, 49],
+			bgMagenta: [45, 49],
+			bgCyan: [46, 49],
+			bgWhite: [47, 49],
+
+			// Bright color
+			bgBlackBright: [100, 49],
+			bgRedBright: [101, 49],
+			bgGreenBright: [102, 49],
+			bgYellowBright: [103, 49],
+			bgBlueBright: [104, 49],
+			bgMagentaBright: [105, 49],
+			bgCyanBright: [106, 49],
+			bgWhiteBright: [107, 49]
+		}
+	};
+
+	// Alias bright black as gray (and grey)
+	styles.color.gray = styles.color.blackBright;
+	styles.bgColor.bgGray = styles.bgColor.bgBlackBright;
+	styles.color.grey = styles.color.blackBright;
+	styles.bgColor.bgGrey = styles.bgColor.bgBlackBright;
+
+	for (const [groupName, group] of Object.entries(styles)) {
+		for (const [styleName, style] of Object.entries(group)) {
+			styles[styleName] = {
+				open: `\u001B[${style[0]}m`,
+				close: `\u001B[${style[1]}m`
+			};
+
+			group[styleName] = styles[styleName];
+
+			codes.set(style[0], style[1]);
+		}
+
+		Object.defineProperty(styles, groupName, {
+			value: group,
+			enumerable: false
+		});
+	}
+
+	Object.defineProperty(styles, 'codes', {
+		value: codes,
+		enumerable: false
+	});
+
+	styles.color.close = '\u001B[39m';
+	styles.bgColor.close = '\u001B[49m';
+
+	styles.color.ansi = wrapAnsi16();
+	styles.color.ansi256 = wrapAnsi256();
+	styles.color.ansi16m = wrapAnsi16m();
+	styles.bgColor.ansi = wrapAnsi16(ANSI_BACKGROUND_OFFSET);
+	styles.bgColor.ansi256 = wrapAnsi256(ANSI_BACKGROUND_OFFSET);
+	styles.bgColor.ansi16m = wrapAnsi16m(ANSI_BACKGROUND_OFFSET);
+
+	// From https://github.com/Qix-/color-convert/blob/3f0e0d4e92e235796ccb17f6e85c72094a651f49/conversions.js
+	Object.defineProperties(styles, {
+		rgbToAnsi256: {
+			value: (red, green, blue) => {
+				// We use the extended greyscale palette here, with the exception of
+				// black and white. normal palette only has 4 greyscale shades.
+				if (red === green && green === blue) {
+					if (red < 8) {
+						return 16;
+					}
+
+					if (red > 248) {
+						return 231;
+					}
+
+					return Math.round(((red - 8) / 247) * 24) + 232;
+				}
+
+				return 16 +
+					(36 * Math.round(red / 255 * 5)) +
+					(6 * Math.round(green / 255 * 5)) +
+					Math.round(blue / 255 * 5);
+			},
+			enumerable: false
+		},
+		hexToRgb: {
+			value: hex => {
+				const matches = /(?<colorString>[a-f\d]{6}|[a-f\d]{3})/i.exec(hex.toString(16));
+				if (!matches) {
+					return [0, 0, 0];
+				}
+
+				let {colorString} = matches.groups;
+
+				if (colorString.length === 3) {
+					colorString = colorString.split('').map(character => character + character).join('');
+				}
+
+				const integer = Number.parseInt(colorString, 16);
+
+				return [
+					(integer >> 16) & 0xFF,
+					(integer >> 8) & 0xFF,
+					integer & 0xFF
+				];
+			},
+			enumerable: false
+		},
+		hexToAnsi256: {
+			value: hex => styles.rgbToAnsi256(...styles.hexToRgb(hex)),
+			enumerable: false
+		},
+		ansi256ToAnsi: {
+			value: code => {
+				if (code < 8) {
+					return 30 + code;
+				}
+
+				if (code < 16) {
+					return 90 + (code - 8);
+				}
+
+				let red;
+				let green;
+				let blue;
+
+				if (code >= 232) {
+					red = (((code - 232) * 10) + 8) / 255;
+					green = red;
+					blue = red;
+				} else {
+					code -= 16;
+
+					const remainder = code % 36;
+
+					red = Math.floor(code / 36) / 5;
+					green = Math.floor(remainder / 6) / 5;
+					blue = (remainder % 6) / 5;
+				}
+
+				const value = Math.max(red, green, blue) * 2;
+
+				if (value === 0) {
+					return 30;
+				}
+
+				let result = 30 + ((Math.round(blue) << 2) | (Math.round(green) << 1) | Math.round(red));
+
+				if (value === 2) {
+					result += 60;
+				}
+
+				return result;
+			},
+			enumerable: false
+		},
+		rgbToAnsi: {
+			value: (red, green, blue) => styles.ansi256ToAnsi(styles.rgbToAnsi256(red, green, blue)),
+			enumerable: false
+		},
+		hexToAnsi: {
+			value: hex => styles.ansi256ToAnsi(styles.hexToAnsi256(hex)),
+			enumerable: false
+		}
+	});
+
+	return styles;
+}
+
+const ansiStyles = assembleStyles();
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ansiStyles);
+
+
 /***/ })
 
 /******/ 	});
@@ -8536,6 +8775,34 @@ module.exports = require("util");
 /******/ 	}
 /******/ 	
 /************************************************************************/
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__nccwpck_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__nccwpck_require__.o(definition, key) && !__nccwpck_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__nccwpck_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__nccwpck_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";

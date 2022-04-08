@@ -28,6 +28,7 @@
   "dependencies": {
     "@actions/core": "^1.6.0",
     "@actions/tool-cache": "^1.7.2",
+    "ansi-styles": "^6.1.0",
     "diff": "^5.0.0"
   },
   "devDependencies": {
