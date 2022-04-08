@@ -2,7 +2,7 @@
 
 # Swag tool for golang applications
 
-This action installs [swag](https://github.com/swaggo/swag) tool to generate/test your in golang application
+This action installs [swag](https://github.com/swaggo/swag) tool to generate/test your golang application
 
 ## Features
 
