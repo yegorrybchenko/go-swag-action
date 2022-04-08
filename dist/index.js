@@ -87,50 +87,29 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.compareGoFiles = void 0;
 const Diff = __importStar(__nccwpck_require__(1672));
 const core = __importStar(__nccwpck_require__(2186));
-<<<<<<< HEAD
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const ansi_styles_1 = __importDefault(__nccwpck_require__(6844));
-=======
-const fs_1 = __importDefault(__nccwpck_require__(5747));
->>>>>>> origin/main
 const DEFAULT_GO_FILE_PATH = 'docs/docs.go';
 function compareGoFiles(generatedFilePath) {
     return __awaiter(this, void 0, void 0, function* () {
         const existingGoFilePath = _getExistingGoFilePath();
         const existingFileBuf = fs_1.default.readFileSync(existingGoFilePath);
         const generatedFileBuf = fs_1.default.readFileSync(generatedFilePath);
-<<<<<<< HEAD
         core.info(`Comparing ${existingGoFilePath} with ${generatedFilePath} ...`);
-=======
->>>>>>> origin/main
         const changes = Diff.diffLines(existingFileBuf.toString(), generatedFileBuf.toString());
         let changedLines = 0;
         for (const change of changes) {
             if (change.added) {
-<<<<<<< HEAD
                 _printDiffMessage(change.value, true);
                 changedLines++;
             }
             else if (change.removed) {
                 _printDiffMessage(change.value, false);
-=======
-                const greenColor = '\u001b[32m';
-                core.info(`${greenColor}${change.value}`);
-                changedLines++;
-            }
-            else if (change.removed) {
-                const redColor = '\u001b[31m';
-                core.info(`${redColor}${change.value}`);
->>>>>>> origin/main
                 changedLines++;
             }
         }
         if (changedLines === 0) {
-<<<<<<< HEAD
-            core.info('\u001b[32mFiles are equal');
-=======
-            core.info('Files are equal');
->>>>>>> origin/main
+            core.info(`${ansi_styles_1.default.color.green.open}Files are equal`);
         }
         else {
             throw new Error(`Go files are not equal`);
@@ -142,7 +121,6 @@ function _getExistingGoFilePath() {
     const baseGoFileToEqual = core.getInput('equalToGoOriginPath');
     return baseGoFileToEqual || DEFAULT_GO_FILE_PATH;
 }
-<<<<<<< HEAD
 function _printDiffMessage(value, added) {
     const insertValue = added
         ? `${ansi_styles_1.default.color.green.open}+`
@@ -152,8 +130,6 @@ function _printDiffMessage(value, added) {
         core.info(str);
     }
 }
-=======
->>>>>>> origin/main
 
 
 /***/ }),
@@ -198,15 +174,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.extractTool = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const tc = __importStar(__nccwpck_require__(7784));
-<<<<<<< HEAD
 const fs_1 = __importDefault(__nccwpck_require__(7147));
 const assert_1 = __nccwpck_require__(9491);
 const path_1 = __importDefault(__nccwpck_require__(1017));
-=======
-const fs_1 = __importDefault(__nccwpck_require__(5747));
-const assert_1 = __nccwpck_require__(2357);
-const path_1 = __importDefault(__nccwpck_require__(5622));
->>>>>>> origin/main
 const downloadPath = 'https://github.com/swaggo/swag/releases/download/';
 function extractTool(version) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -285,11 +255,7 @@ const run_1 = __nccwpck_require__(7884);
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-<<<<<<< HEAD
             yield (0, run_1.run)();
-=======
-            (0, run_1.run)();
->>>>>>> origin/main
         }
         catch (error) {
             if (error instanceof Error)
@@ -343,7 +309,6 @@ const command_1 = __nccwpck_require__(524);
 const extract_1 = __nccwpck_require__(1259);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
-<<<<<<< HEAD
         const swagVersion = core.getInput('swagWersion', { required: true });
         const toolPath = yield (0, extract_1.extractTool)(swagVersion);
         const command = core.getInput('command');
@@ -352,14 +317,6 @@ function run() {
             if (returnCode !== 0) {
                 throw new Error(`swag tool is failed to exec your command`);
             }
-=======
-        const command = core.getInput('command', { required: true });
-        const swagVersion = core.getInput('swagWersion', { required: true });
-        const toolPath = yield (0, extract_1.extractTool)(swagVersion);
-        const returnCode = yield (0, command_1.execTool)(toolPath, command);
-        if (returnCode !== 0) {
-            throw new Error(`swag tool is failed to exec your command`);
->>>>>>> origin/main
         }
         const equalToGoPath = core.getInput('equalToGoPath');
         if (equalToGoPath !== '') {
@@ -398,11 +355,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.issue = exports.issueCommand = void 0;
-<<<<<<< HEAD
 const os = __importStar(__nccwpck_require__(2037));
-=======
-const os = __importStar(__nccwpck_require__(2087));
->>>>>>> origin/main
 const utils_1 = __nccwpck_require__(5278);
 /**
  * Commands
@@ -513,13 +466,8 @@ exports.getIDToken = exports.getState = exports.saveState = exports.group = expo
 const command_1 = __nccwpck_require__(7351);
 const file_command_1 = __nccwpck_require__(717);
 const utils_1 = __nccwpck_require__(5278);
-<<<<<<< HEAD
 const os = __importStar(__nccwpck_require__(2037));
 const path = __importStar(__nccwpck_require__(1017));
-=======
-const os = __importStar(__nccwpck_require__(2087));
-const path = __importStar(__nccwpck_require__(5622));
->>>>>>> origin/main
 const oidc_utils_1 = __nccwpck_require__(8041);
 /**
  * The code to exit an action
@@ -828,13 +776,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.issueCommand = void 0;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
-<<<<<<< HEAD
 const fs = __importStar(__nccwpck_require__(7147));
 const os = __importStar(__nccwpck_require__(2037));
-=======
-const fs = __importStar(__nccwpck_require__(5747));
-const os = __importStar(__nccwpck_require__(2087));
->>>>>>> origin/main
 const utils_1 = __nccwpck_require__(5278);
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
@@ -1019,11 +962,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getExecOutput = exports.exec = void 0;
-<<<<<<< HEAD
 const string_decoder_1 = __nccwpck_require__(1576);
-=======
-const string_decoder_1 = __nccwpck_require__(4304);
->>>>>>> origin/main
 const tr = __importStar(__nccwpck_require__(8159));
 /**
  * Exec a command.
@@ -1133,7 +1072,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.argStringToArray = exports.ToolRunner = void 0;
-<<<<<<< HEAD
 const os = __importStar(__nccwpck_require__(2037));
 const events = __importStar(__nccwpck_require__(2361));
 const child = __importStar(__nccwpck_require__(8493));
@@ -1141,15 +1079,6 @@ const path = __importStar(__nccwpck_require__(1017));
 const io = __importStar(__nccwpck_require__(7436));
 const ioUtil = __importStar(__nccwpck_require__(1962));
 const timers_1 = __nccwpck_require__(9512);
-=======
-const os = __importStar(__nccwpck_require__(2087));
-const events = __importStar(__nccwpck_require__(8614));
-const child = __importStar(__nccwpck_require__(3129));
-const path = __importStar(__nccwpck_require__(5622));
-const io = __importStar(__nccwpck_require__(7436));
-const ioUtil = __importStar(__nccwpck_require__(1962));
-const timers_1 = __nccwpck_require__(8213);
->>>>>>> origin/main
 /* eslint-disable @typescript-eslint/unbound-method */
 const IS_WINDOWS = process.platform === 'win32';
 /*
@@ -1805,13 +1734,8 @@ exports.PersonalAccessTokenCredentialHandler = PersonalAccessTokenCredentialHand
 "use strict";
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-<<<<<<< HEAD
 const http = __nccwpck_require__(3685);
 const https = __nccwpck_require__(5687);
-=======
-const http = __nccwpck_require__(8605);
-const https = __nccwpck_require__(7211);
->>>>>>> origin/main
 const pm = __nccwpck_require__(6443);
 let tunnel;
 var HttpCodes;
@@ -2450,13 +2374,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 var _a;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getCmdPath = exports.tryGetExecutablePath = exports.isRooted = exports.isDirectory = exports.exists = exports.IS_WINDOWS = exports.unlink = exports.symlink = exports.stat = exports.rmdir = exports.rename = exports.readlink = exports.readdir = exports.mkdir = exports.lstat = exports.copyFile = exports.chmod = void 0;
-<<<<<<< HEAD
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
-=======
-const fs = __importStar(__nccwpck_require__(5747));
-const path = __importStar(__nccwpck_require__(5622));
->>>>>>> origin/main
 _a = fs.promises, exports.chmod = _a.chmod, exports.copyFile = _a.copyFile, exports.lstat = _a.lstat, exports.mkdir = _a.mkdir, exports.readdir = _a.readdir, exports.readlink = _a.readlink, exports.rename = _a.rename, exports.rmdir = _a.rmdir, exports.stat = _a.stat, exports.symlink = _a.symlink, exports.unlink = _a.unlink;
 exports.IS_WINDOWS = process.platform === 'win32';
 function exists(fsPath) {
@@ -2638,17 +2557,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.findInPath = exports.which = exports.mkdirP = exports.rmRF = exports.mv = exports.cp = void 0;
-<<<<<<< HEAD
 const assert_1 = __nccwpck_require__(9491);
 const childProcess = __importStar(__nccwpck_require__(8493));
 const path = __importStar(__nccwpck_require__(1017));
 const util_1 = __nccwpck_require__(3837);
-=======
-const assert_1 = __nccwpck_require__(2357);
-const childProcess = __importStar(__nccwpck_require__(3129));
-const path = __importStar(__nccwpck_require__(5622));
-const util_1 = __nccwpck_require__(1669);
->>>>>>> origin/main
 const ioUtil = __importStar(__nccwpck_require__(1962));
 const exec = util_1.promisify(childProcess.exec);
 const execFile = util_1.promisify(childProcess.execFile);
@@ -2997,15 +2909,9 @@ const semver = __importStar(__nccwpck_require__(5911));
 const core_1 = __nccwpck_require__(2186);
 // needs to be require for core node modules to be mocked
 /* eslint @typescript-eslint/no-require-imports: 0 */
-<<<<<<< HEAD
 const os = __nccwpck_require__(2037);
 const cp = __nccwpck_require__(8493);
 const fs = __nccwpck_require__(7147);
-=======
-const os = __nccwpck_require__(2087);
-const cp = __nccwpck_require__(3129);
-const fs = __nccwpck_require__(5747);
->>>>>>> origin/main
 function _findMatch(versionSpec, stable, candidates, archFilter) {
     return __awaiter(this, void 0, void 0, function* () {
         const platFilter = os.platform();
@@ -3229,7 +3135,6 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.evaluateVersions = exports.isExplicitVersion = exports.findFromManifest = exports.getManifestFromRepo = exports.findAllVersions = exports.find = exports.cacheFile = exports.cacheDir = exports.extractZip = exports.extractXar = exports.extractTar = exports.extract7z = exports.downloadTool = exports.HTTPError = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const io = __importStar(__nccwpck_require__(7436));
-<<<<<<< HEAD
 const fs = __importStar(__nccwpck_require__(7147));
 const mm = __importStar(__nccwpck_require__(2473));
 const os = __importStar(__nccwpck_require__(2037));
@@ -3241,19 +3146,6 @@ const util = __importStar(__nccwpck_require__(3837));
 const v4_1 = __importDefault(__nccwpck_require__(824));
 const exec_1 = __nccwpck_require__(1514);
 const assert_1 = __nccwpck_require__(9491);
-=======
-const fs = __importStar(__nccwpck_require__(5747));
-const mm = __importStar(__nccwpck_require__(2473));
-const os = __importStar(__nccwpck_require__(2087));
-const path = __importStar(__nccwpck_require__(5622));
-const httpm = __importStar(__nccwpck_require__(9925));
-const semver = __importStar(__nccwpck_require__(5911));
-const stream = __importStar(__nccwpck_require__(2413));
-const util = __importStar(__nccwpck_require__(1669));
-const v4_1 = __importDefault(__nccwpck_require__(824));
-const exec_1 = __nccwpck_require__(1514);
-const assert_1 = __nccwpck_require__(2357);
->>>>>>> origin/main
 const retry_helper_1 = __nccwpck_require__(8279);
 class HTTPError extends Error {
     constructor(httpStatusCode) {
@@ -4028,11 +3920,7 @@ function diffArrays(oldArr, newArr, callback) {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-<<<<<<< HEAD
 exports["default"] = Diff;
-=======
-exports.default = Diff;
->>>>>>> origin/main
 
 /*istanbul ignore end*/
 function Diff() {}
@@ -6452,11 +6340,7 @@ function arrayStartsWith(array, start) {
 Object.defineProperty(exports, "__esModule", ({
   value: true
 }));
-<<<<<<< HEAD
 exports["default"] = _default;
-=======
-exports.default = _default;
->>>>>>> origin/main
 
 /*istanbul ignore end*/
 // Iterator that traverses in the range of [min, max], stepping
@@ -8160,7 +8044,6 @@ module.exports = __nccwpck_require__(4219);
 "use strict";
 
 
-<<<<<<< HEAD
 var net = __nccwpck_require__(1808);
 var tls = __nccwpck_require__(4404);
 var http = __nccwpck_require__(3685);
@@ -8168,15 +8051,6 @@ var https = __nccwpck_require__(5687);
 var events = __nccwpck_require__(2361);
 var assert = __nccwpck_require__(9491);
 var util = __nccwpck_require__(3837);
-=======
-var net = __nccwpck_require__(1631);
-var tls = __nccwpck_require__(4016);
-var http = __nccwpck_require__(8605);
-var https = __nccwpck_require__(7211);
-var events = __nccwpck_require__(8614);
-var assert = __nccwpck_require__(2357);
-var util = __nccwpck_require__(1669);
->>>>>>> origin/main
 
 
 exports.httpOverHttp = httpOverHttp;
@@ -8475,11 +8349,7 @@ module.exports = bytesToUuid;
 // Unique ID creation requires a high quality random # generator.  In node.js
 // this is pretty straight-forward - we use the crypto API.
 
-<<<<<<< HEAD
 var crypto = __nccwpck_require__(6113);
-=======
-var crypto = __nccwpck_require__(6417);
->>>>>>> origin/main
 
 module.exports = function nodeRNG() {
   return crypto.randomBytes(16);
@@ -8524,11 +8394,7 @@ module.exports = v4;
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 9491:
-=======
-/***/ 2357:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8536,11 +8402,7 @@ module.exports = require("assert");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 8493:
-=======
-/***/ 3129:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8548,11 +8410,7 @@ module.exports = require("child_process");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 6113:
-=======
-/***/ 6417:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8560,11 +8418,7 @@ module.exports = require("crypto");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 2361:
-=======
-/***/ 8614:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8572,11 +8426,7 @@ module.exports = require("events");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 7147:
-=======
-/***/ 5747:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8584,11 +8434,7 @@ module.exports = require("fs");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 3685:
-=======
-/***/ 8605:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8596,11 +8442,7 @@ module.exports = require("http");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 5687:
-=======
-/***/ 7211:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8608,11 +8450,7 @@ module.exports = require("https");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 1808:
-=======
-/***/ 1631:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8620,11 +8458,7 @@ module.exports = require("net");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 2037:
-=======
-/***/ 2087:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8632,11 +8466,7 @@ module.exports = require("os");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 1017:
-=======
-/***/ 5622:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8644,11 +8474,7 @@ module.exports = require("path");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 2781:
-=======
-/***/ 2413:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8656,11 +8482,7 @@ module.exports = require("stream");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 1576:
-=======
-/***/ 4304:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8668,11 +8490,7 @@ module.exports = require("string_decoder");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 9512:
-=======
-/***/ 8213:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8680,11 +8498,7 @@ module.exports = require("timers");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 4404:
-=======
-/***/ 4016:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
@@ -8692,11 +8506,7 @@ module.exports = require("tls");
 
 /***/ }),
 
-<<<<<<< HEAD
 /***/ 3837:
-=======
-/***/ 1669:
->>>>>>> origin/main
 /***/ ((module) => {
 
 "use strict";
