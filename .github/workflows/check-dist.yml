@@ -37,9 +37,10 @@ jobs:
         id: install
         run: npm ci
 
-      - name: Build dist/ Directory
-        id: build
-        run: npm run bundle
+      - name: Rebuild the dist/ directory
+        run: |
+          npm run build
+          npm run package
 
       # This will fail the workflow if the `dist/` directory is different than
       # expected.
